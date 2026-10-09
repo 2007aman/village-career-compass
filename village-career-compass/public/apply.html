@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Form - Village Career Compass</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            background-color: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--primary-orange, #f97316);
+            box-shadow: 0 0 10px rgba(249, 115, 22, 0.2);
+            background-color: rgba(30, 41, 59, 1);
+        }
+        .form-select option {
+            background-color: #0f172a;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-gray-100">
+    <script src="navbar.js"></script>
+    <custom-navbar></custom-navbar>
+
+    <section class="py-16 px-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold gradient-text mb-4">Application Form</h1>
+            <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                Take the next step in your career journey. Fill out the details below to apply for scholarships or training programs.
+            </p>
+        </div>
+    </section>
+
+    <section class="py-12 px-6">
+        <div class="container mx-auto max-w-3xl">
+            <div class="glass-card p-8 rounded-2xl relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 to-yellow-500"></div>
+                
+                <form id="applicationForm" class="space-y-8 mt-4">
+                    
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4 border-b border-gray-700 pb-2 text-orange-400">1. Personal Information</h2>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2" for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" required class="form-input" placeholder="e.g., Amit Kumar">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2" for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" required class="form-input" placeholder="+91 XXXXX XXXXX">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-400 mb-2" for="email">Email Address</label>
+                                <input type="email" id="email" class="form-input" placeholder="your.email@example.com">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2" for="village">Village / Town *</label>
+                                <input type="text" id="village" required class="form-input" placeholder="Your locality">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-400 mb-2" for="district">District & State *</label>
+                                <input type="text" id="district" required class="form-input" placeholder="e.g., Patna, Bihar">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4 border-b border-gray-700 pb-2 text-orange-400">2. Program Selection</h2>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-400 mb-2" for="program">What are you applying for? *</label>
+                            <select id="program" required class="form-select">
+                                <option value="" disabled selected>-- Select a Scholarship or Training Center --</option>
+                                <optgroup label="Scholarships">
+                                    <option value="mhrd">MHRD Rural Scholarship</option>
+                                    <option value="tata">Tata Trusts Scholarship</option>
+                                    <option value="state">State Rural Development Scholarship</option>
+                                    <option value="skills">Skills India Scholarship</option>
+                                </optgroup>
+                                <optgroup label="Training Centers">
+                                    <option value="it-hub">Rural IT Training Center</option>
+                                    <option value="vocational">Skill Development Hub</option>
+                                    <option value="agri">Agricultural Training Institute</option>
+                                </optgroup>
+                            </select>
+                        </div>
+                        <div class="mt-4">
+                            <label class="block text-sm font-medium text-gray-400 mb-2" for="education">Current Education Level *</label>
+                            <select id="education" required class="form-select">
+                                <option value="" disabled selected>-- Select your highest qualification --</option>
+                                <option value="10th">10th Pass</option>
+                                <option value="12th">12th Pass</option>
+                                <option value="diploma">Diploma</option>
+                                <option value="undergrad">Undergraduate / Degree</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4 border-b border-gray-700 pb-2 text-orange-400">3. Short Essay Questions</h2>
+                        <p class="text-sm text-gray-400 mb-6">Please answer the following questions honestly. Your answers help us understand your drive and goals.</p>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-white mb-2" for="essay1">Why are you applying for this specific opportunity? *</label>
+                                <p class="text-xs text-gray-500 mb-2">Maximum 150 words</p>
+                                <textarea id="essay1" rows="4" required class="form-textarea" placeholder="I am applying because..."></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-white mb-2" for="essay2">What are your career goals for the next 3 to 5 years? *</label>
+                                <p class="text-xs text-gray-500 mb-2">How will this program help you achieve them?</p>
+                                <textarea id="essay2" rows="4" required class="form-textarea" placeholder="My future goal is to..."></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-white mb-2" for="essay3">Describe a challenge you faced in your education and how you overcame it. *</label>
+                                <textarea id="essay3" rows="4" required class="form-textarea" placeholder="During my studies, I struggled with..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-gray-700 flex justify-end gap-4">
+                        <button type="reset" class="border-2 border-gray-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-all text-gray-300">
+                            Clear Form
+                        </button>
+                        <button type="submit" class="gradient-btn px-8 py-3 rounded-lg font-semibold inline-flex items-center gap-2">
+                            Submit Application
+                            <i data-feather="send" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="footer.js"></script>
+    <custom-footer></custom-footer>
+    
+    <script src="application.js"></script>
+</body>
+</html>

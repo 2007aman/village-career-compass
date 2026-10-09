@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Career Compass - Smart Guidance for Rural Students</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /* Modern Glassmorphism & Custom Glow Effects */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(249, 115, 22, 0.4);
+            box-shadow: 0 20px 30px -10px rgba(249, 115, 22, 0.15), 0 0 15px rgba(234, 88, 12, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-btn {
+            background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+        }
+
+        .gradient-btn:hover {
+            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .glow-effect {
+            box-shadow: 0 0 25px rgba(249, 115, 22, 0.4);
+        }
+
+        /* Ambient Glow Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-gray-100 min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
+
+    <script src="navbar.js"></script>
+    <custom-navbar></custom-navbar>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-20 px-6">
+        <!-- Ambient Glowing Background Orbs -->
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-orange-500/15 rounded-full blur-3xl pointer-events-none animate-float"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-yellow-500/15 rounded-full blur-3xl pointer-events-none animate-float" style="animation-delay: 2s;"></div>
+        
+        <div class="container mx-auto text-center relative z-10 max-w-5xl">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-semibold mb-6 shadow-lg">
+                🌟 Bridging The Rural Opportunities Gap
+            </span>
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 gradient-text tracking-tight leading-tight">
+                Village Career Compass
+            </h1>
+            <p class="text-lg md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed font-light">
+                Empowering talented students from rural backgrounds with structured career roadmaps, real-time mentorship, local skill centers, and government scholarship support.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+                <a href="quiz.html" class="gradient-btn px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-3 glow-effect">
+                    <i data-feather="target" class="w-5 h-5"></i>
+                    Start Aptitude Test
+                </a>
+                <a href="careers.html" class="border-2 border-orange-500/80 px-8 py-4 rounded-full font-semibold text-lg hover:bg-orange-500/10 transition-all duration-300 flex items-center gap-3 text-orange-400">
+                    <i data-feather="compass" class="w-5 h-5"></i>
+                    Explore Career Paths
+                </a>
+            </div>
+            
+            <p id="home-auth-note" class="text-sm text-gray-400 -mt-6 mb-10">
+                New here? <a href="signup.html" class="text-orange-400 font-semibold hover:text-amber-300">Create a free account</a>
+                to save your quiz result, chat with mentors and apply for scholarships.
+                <a href="login.html" class="text-gray-300 underline hover:text-orange-400 ml-1">Log in</a>
+            </p>
+
+            <div class="flex flex-wrap justify-center items-center gap-6 md:gap-10 pt-6 border-t border-slate-800/80 max-w-2xl mx-auto">
+                <div class="flex items-center gap-2 text-gray-300 text-sm font-medium">
+                    <i data-feather="award" class="w-5 h-5 text-yellow-500"></i>
+                    <span>Government Approved</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-300 text-sm font-medium">
+                    <i data-feather="users" class="w-5 h-5 text-orange-500"></i>
+                    <span>15,000+ Students Guided</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-300 text-sm font-medium">
+                    <i data-feather="trending-up" class="w-5 h-5 text-green-500"></i>
+                    <span>98% Mentorship Match</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Features -->
+    <section class="py-20 px-6 bg-slate-900/50 relative border-y border-slate-800/60">
+        <div class="container mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-extrabold gradient-text mb-4">Core Platform Features</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-base md:text-lg">Tailored digital tools designed specifically to help students overcome geographical and resource barriers.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Assessment Quiz Card -->
+                <div class="glass-card rounded-2xl flex flex-col justify-between">
+                    <div class="relative h-48 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&auto=format&fit=crop&q=80" alt="Career Assessment" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-gradient-to-tr from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20 shrink-0">
+                                    <i data-feather="edit-3" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Aptitude & Interest Test</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                Our scientifically designed quiz evaluates your logical reasoning, technical capabilities, and personal interests. It helps identify unique potential in domains ranging from renewable energy to digital arts.
+                            </p>
+                        </div>
+                        <a href="quiz.html" class="mt-4 inline-flex items-center gap-2 text-orange-400 font-semibold hover:text-amber-300 transition-colors">
+                            <span>Take the Assessment</span>
+                            <i data-feather="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Career Mapping Card -->
+                <div class="glass-card rounded-2xl flex flex-col justify-between">
+                    <div class="relative h-48 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&auto=format&fit=crop&q=80" alt="Career Mapping" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-gradient-to-tr from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20 shrink-0">
+                                    <i data-feather="map" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Career Path Mapping</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                Detailed, step-by-step roadmaps showing required qualifications, salary projections, YouTube courses, and local industry demands for dozens of non-traditional and modern career options.
+                            </p>
+                        </div>
+                        <a href="careers.html" class="mt-4 inline-flex items-center gap-2 text-orange-400 font-semibold hover:text-amber-300 transition-colors">
+                            <span>Explore Roadmaps</span>
+                            <i data-feather="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mentorship Network Card -->
+                <div class="glass-card rounded-2xl flex flex-col justify-between">
+                    <div class="relative h-48 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&auto=format&fit=crop&q=80" alt="Mentor Network" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-gradient-to-tr from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20 shrink-0">
+                                    <i data-feather="users" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-white">Verified Mentor Network</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm mb-4 leading-relaxed">
+                                Connect directly with experienced working professionals and alumni who came from similar backgrounds. Get personalized 1-on-1 guidance, resume advice, and interview preparation.
+                            </p>
+                        </div>
+                        <a href="mentors.html" class="mt-4 inline-flex items-center gap-2 text-orange-400 font-semibold hover:text-amber-300 transition-colors">
+                            <span>Connect With Mentors</span>
+                            <i data-feather="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact & Statistics Section -->
+    <section class="py-20 px-6 relative overflow-hidden">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl md:text-4xl font-extrabold gradient-text mb-2">15,000+</div>
+                    <div class="text-gray-400 text-sm font-medium">Students Guided</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl md:text-4xl font-extrabold gradient-text mb-2">500+</div>
+                    <div class="text-gray-400 text-sm font-medium">Career Profiles</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl md:text-4xl font-extrabold gradient-text mb-2">1,200+</div>
+                    <div class="text-gray-400 text-sm font-medium">Active Mentors</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl md:text-4xl font-extrabold gradient-text mb-2">98%</div>
+                    <div class="text-gray-400 text-sm font-medium">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Opportunities Section -->
+    <section class="py-20 px-6 bg-slate-900/40 border-t border-slate-800/60">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-extrabold gradient-text mb-4">Regional & Government Schemes</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto text-base">Unlocking financial aid, vocational centers, and skill DEVELOPMENT schemes nearby.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Comprehensive Scholarship Info Card -->
+                <div class="glass-card p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-orange-500/10 border border-orange-500/30 rounded-xl flex items-center justify-center mb-6">
+                            <i data-feather="award" class="w-6 h-6 text-orange-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Scholarships & Financial Grants</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                            Navigating education costs can be challenging. Village Career Compass aggregates verified central and state-level government scholarships specifically designed for rural talent. From post-matric aid to merit-based grants for technical education, we ensure you never miss an application deadline due to lack of information.
+                        </p>
+                    </div>
+                    <a href="scholarships.html" class="gradient-btn px-6 py-3 rounded-xl font-semibold text-center text-sm inline-flex items-center justify-center gap-2">
+                        <span>Browse Scholarship Database</span>
+                        <i data-feather="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- Skill Centers Card -->
+                <div class="glass-card p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-amber-500/10 border border-amber-500/30 rounded-xl flex items-center justify-center mb-6">
+                            <i data-feather="tool" class="w-6 h-6 text-amber-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Local Skill & Vocational Centers</h3>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                            Practical skills open immediate job opportunities. Discover certified vocational training institutes, ITIs, and PMKVY skill centers near your village. Whether you want to master solar installation, drone piloting, digital literacy, or micro-finance management, find accredited centers near you with verified course details.
+                        </p>
+                    </div>
+                    <a href="scholarships.html" class="gradient-btn px-6 py-3 rounded-xl font-semibold text-center text-sm inline-flex items-center justify-center gap-2">
+                        <span>Explore Nearby Centers</span>
+                        <i data-feather="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action -->
+    <section class="py-20 px-6 text-center relative overflow-hidden">
+        <div class="container mx-auto max-w-3xl relative z-10">
+            <h2 class="text-4xl md:text-5xl font-extrabold gradient-text mb-6">Ready to Shape Your Future?</h2>
+            <p class="text-lg text-gray-300 mb-8 leading-relaxed">
+                Take the first step toward a fulfilling career. Discover your strengths, get mapped to high-growth opportunities, and gain direct guidance from verified mentors.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="quiz.html" class="gradient-btn px-8 py-4 rounded-full font-semibold text-lg glow-effect flex items-center gap-2">
+                    <i data-feather="play" class="w-5 h-5"></i>
+                    Start Free Assessment
+                </a>
+                <a href="mentors.html" class="border-2 border-orange-500/80 px-8 py-4 rounded-full font-semibold text-lg text-orange-400 hover:bg-orange-500/10 transition-all flex items-center gap-2">
+                    <i data-feather="message-circle" class="w-5 h-5"></i>
+                    Talk to a Mentor
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="footer.js"></script>
+    <custom-footer></custom-footer>
+
+    <script>
+        feather.replace();
+
+        // Greet logged-in students instead of showing the sign-up prompt
+        fetch('/api/auth/me').then(r => r.json()).then(d => {
+            if (!d || !d.user) return;
+            const note = document.getElementById('home-auth-note');
+            note.textContent = '';
+            note.append('Welcome back, ');
+            const strong = document.createElement('span');
+            strong.className = 'text-orange-400 font-semibold';
+            strong.textContent = d.user.name.split(' ')[0];
+            note.append(strong, ' - ');
+            const link = document.createElement('a');
+            link.href = 'dashboard.html';
+            link.className = 'text-gray-300 underline hover:text-orange-400';
+            link.textContent = 'open My Account';
+            note.append(link);
+        }).catch(() => {});
+    </script>
+</body>
+</html>

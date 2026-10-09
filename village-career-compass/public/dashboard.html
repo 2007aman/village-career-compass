@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Village Career Compass</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-slate-950 text-gray-100 min-h-screen flex flex-col">
+    <script src="navbar.js"></script>
+    <custom-navbar></custom-navbar>
+
+    <section class="py-14 px-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold gradient-text mb-4" id="greeting">My Account</h1>
+            <p class="text-lg text-gray-300 max-w-xl mx-auto">Your profile, quiz result and applications in one place.</p>
+        </div>
+    </section>
+
+    <section class="py-12 px-6 flex-grow">
+        <div class="container mx-auto max-w-5xl grid lg:grid-cols-3 gap-8">
+
+            <div class="space-y-8">
+                <div class="glass-card p-6 rounded-2xl">
+                    <h2 class="text-xl font-bold text-orange-400 mb-4">Profile</h2>
+                    <dl class="space-y-3 text-sm">
+                        <div><dt class="text-gray-500">Name</dt><dd id="p-name" class="text-white font-medium">-</dd></div>
+                        <div><dt class="text-gray-500">Email</dt><dd id="p-email" class="text-white font-medium break-all">-</dd></div>
+                        <div><dt class="text-gray-500">Phone</dt><dd id="p-phone" class="text-white font-medium">-</dd></div>
+                        <div><dt class="text-gray-500">Member since</dt><dd id="p-since" class="text-white font-medium">-</dd></div>
+                    </dl>
+                    <button id="logoutBtn" class="mt-6 w-full border-2 border-orange-500 px-4 py-2.5 rounded-lg font-semibold text-orange-400 hover:bg-orange-500 hover:text-white transition-all">Logout</button>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl">
+                    <h2 class="text-xl font-bold text-orange-400 mb-4">Career Quiz Result</h2>
+                    <div id="quiz-box" class="text-sm text-gray-400">Loading...</div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 glass-card p-6 rounded-2xl">
+                <div class="flex items-center justify-between mb-4 gap-3">
+                    <h2 class="text-xl font-bold text-orange-400">My Applications</h2>
+                    <a href="apply.html" class="gradient-btn px-4 py-2 rounded-lg text-sm font-semibold">New Application</a>
+                </div>
+                <div id="apps-box" class="text-sm text-gray-400">Loading...</div>
+            </div>
+        </div>
+    </section>
+
+    <script src="footer.js"></script>
+    <custom-footer></custom-footer>
+    <script src="dashboard.js"></script>
+</body>
+</html>

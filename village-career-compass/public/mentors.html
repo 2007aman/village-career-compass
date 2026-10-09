@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect with Mentors - Village Career Compass</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-slate-950 text-gray-100 min-h-screen flex flex-col">
+    <script src="navbar.js"></script>
+    <custom-navbar></custom-navbar>
+
+    <!-- Hero Section -->
+    <section class="py-20 px-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10 text-center">
+        <h1 class="text-5xl font-bold text-orange-500 mb-6">Connect with Mentors</h1>
+        <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+            Get guidance from experienced professionals and successful alumni from rural backgrounds
+        </p>
+        <div class="max-w-md mx-auto relative">
+            <input type="text" id="searchInput" class="w-full px-4 py-3 bg-gray-800 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Find mentors by name, role or expertise...">
+        </div>
+        <p id="mentor-login-hint" class="hidden text-sm text-gray-400 mt-4">
+            <a href="login.html?next=mentors.html" class="text-orange-400 font-semibold hover:text-amber-300">Log in</a>
+            or <a href="signup.html?next=mentors.html" class="text-orange-400 font-semibold hover:text-amber-300">sign up</a> to chat with a mentor.
+        </p>
+    </section>
+
+    <!-- Mentors Grid -->
+    <section class="py-12 px-6">
+        <div class="container mx-auto">
+            <div id="mentorsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+    </section>
+
+    <!-- Become a Mentor Section -->
+    <section class="py-16 px-6 bg-gradient-to-b from-transparent to-gray-900 text-center">
+        <div class="container mx-auto max-w-3xl">
+            <h2 class="text-3xl font-bold mb-6">Want to Become a Mentor?</h2>
+            <p class="text-gray-400 mb-8">Share your journey and guide the next generation of rural students.</p>
+            <div class="bg-slate-900 border border-slate-800 p-8 rounded-2xl">
+                <button onclick="registerMentorInDB()" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-lg font-semibold text-lg inline-flex items-center gap-2">
+                    <i data-feather="user-plus" class="w-5 h-5"></i>
+                    Register as Mentor
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script src="footer.js"></script>
+    <custom-footer></custom-footer>
+
+    <!-- Direct Chatbot JS Script -->
+    <script>
+    let currentActiveMentor = null;
+
+    // Escape any user/DB/AI supplied text before putting it into innerHTML
+    function escapeHtml(v) {
+        return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function safeImg(url) {
+        return /^https?:\/\//i.test(url || '') ? url : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150';
+    }
+
+    // Modal structure dynamically body me inject karne ke liye
+    function injectChatModalHTML() {
+        if (document.getElementById('aiChatModal')) return;
+
+        const modalHTML = `
+        <div id="aiChatModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+            <div class="bg-slate-900 border border-gray-800 rounded-2xl w-full max-w-lg overflow-hidden flex flex-col shadow-2xl h-[550px]">
+                <!-- Header -->
+                <div class="p-4 bg-slate-800/80 border-b border-gray-800 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <img id="aiMentorAvatar" src="" class="w-10 h-10 rounded-full border border-orange-500 object-cover">
+                        <div>
+                            <h3 id="aiMentorName" class="font-bold text-white text-base leading-tight">AI Mentor</h3>
+                            <p id="aiMentorRole" class="text-xs text-orange-400">Career Advisor</p>
+                        </div>
+                    </div>
+                    <button onclick="closeAIChat()" class="text-gray-400 hover:text-white p-2 text-xl font-bold">&times;</button>
+                </div>
+
+                <!-- Messages Box -->
+                <div id="aiChatMessages" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm"></div>
+
+                <!-- Input Box -->
+                <form onsubmit="sendAIChatMessage(event)" class="p-3 bg-slate-800/50 border-t border-gray-800 flex gap-2">
+                    <input type="text" id="aiChatInput" placeholder="Ask your question..." class="flex-1 bg-gray-900 text-white text-sm rounded-xl px-4 py-2.5 border border-gray-700 focus:outline-none focus:border-orange-500" required autocomplete="off">
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2.5 rounded-xl text-sm transition-all">Send</button>
+                </form>
+            </div>
+        </div>`;
+
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    }
+
+    // Modal open karne ka function
+    function openAIChat(mentor) {
+        injectChatModalHTML();
+        currentActiveMentor = mentor;
+        const modal = document.getElementById('aiChatModal');
+        
+        document.getElementById('aiMentorAvatar').src = safeImg(mentor.image);
+        document.getElementById('aiMentorName').textContent = `Chat with ${mentor.name || 'Mentor'}`;
+        document.getElementById('aiMentorRole').textContent = `${mentor.role || 'Advisor'} at ${mentor.company || 'Village Career Compass'}`;
+
+        const messages = document.getElementById('aiChatMessages');
+        messages.innerHTML = `
+            <div class="flex items-start gap-2.5">
+                <div class="bg-slate-800 text-gray-200 p-3 rounded-2xl rounded-tl-none border border-gray-700/50 max-w-[85%]">
+                    Hello! Main <b>${escapeHtml(mentor.name || 'Mentor')}</b> hoon. Main <b>${escapeHtml(mentor.expertise || 'General Guidance')}</b> me aapki help kar sakta hoon. Ask me anything!
+                </div>
+            </div>
+        `;
+
+        modal.classList.remove('hidden');
+    }
+
+    // Modal close karne ka function
+    function closeAIChat() {
+        document.getElementById('aiChatModal')?.classList.add('hidden');
+    }
+
+    // Message send karne ka function
+    async function sendAIChatMessage(event) {
+        event.preventDefault();
+        const input = document.getElementById('aiChatInput');
+        const messages = document.getElementById('aiChatMessages');
+        const userText = input.value.trim();
+        if (!userText) return;
+
+        // Display User Message
+        messages.innerHTML += `
+            <div class="flex items-end justify-end gap-2.5">
+                <div class="bg-orange-500 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%]">${escapeHtml(userText)}</div>
+            </div>`;
+        input.value = '';
+        messages.scrollTop = messages.scrollHeight;
+
+        // Display Loading
+        const typingId = 'typing-' + Date.now();
+        messages.innerHTML += `
+            <div id="${typingId}" class="flex items-start gap-2.5">
+                <div class="bg-slate-800 text-gray-400 p-3 rounded-2xl rounded-tl-none border border-gray-700/50 text-xs italic">
+                    Thinking...
+                </div>
+            </div>`;
+        messages.scrollTop = messages.scrollHeight;
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: userText,
+                    mentor: currentActiveMentor
+                })
+            });
+
+            const data = await response.json();
+            document.getElementById(typingId)?.remove();
+
+            const replyText = data.reply || data.message || "No response generated.";
+            messages.innerHTML += `
+                <div class="flex items-start gap-2.5">
+                    <div class="bg-slate-800 text-gray-200 p-3 rounded-2xl rounded-tl-none border border-gray-700/50 max-w-[85%]">
+                        ${escapeHtml(replyText)}
+                    </div>
+                </div>`;
+        } catch (err) {
+            console.error("Chat Error:", err);
+            document.getElementById(typingId)?.remove();
+            
+            // Smart Fallback Response agar server down ho
+            const fallbackText = `As a ${currentActiveMentor?.role || 'mentor'}, my advice is to focus on practical knowledge, build projects, and keep practicing regularly!`;
+            
+            messages.innerHTML += `
+                <div class="flex items-start gap-2.5">
+                    <div class="bg-slate-800 text-gray-200 p-3 rounded-2xl rounded-tl-none border border-gray-700/50 max-w-[85%]">
+                        ${escapeHtml(fallbackText)}
+                    </div>
+                </div>`;
+        }
+
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    let mentorsList = [];
+
+    // Fetch Mentors from Express Server
+    async function loadData() {
+        const grid = document.getElementById('mentorsGrid');
+        try {
+            const response = await fetch('/api/mentors');
+            const result = await response.json();
+
+            if (result.success && Array.isArray(result.data)) {
+                mentorsList = result.data;
+            } else if (Array.isArray(result)) {
+                mentorsList = result;
+            } else {
+                mentorsList = [];
+            }
+
+            renderMentors(mentorsList);
+        } catch (error) {
+            console.error("Data fetch error:", error);
+            if (typeof fallbackMentors !== 'undefined') {
+                mentorsList = fallbackMentors;
+                renderMentors(mentorsList);
+            } else {
+                grid.innerHTML = `<p class="text-center col-span-full text-red-400 py-10">Could not connect to the server. Please try again in a moment.</p>`;
+            }
+        }
+    }
+
+    // Safe Dynamic UI Render Function
+    function renderMentors(mentors) {
+        const grid = document.getElementById('mentorsGrid');
+        
+        if (!mentors || mentors.length === 0) {
+            grid.innerHTML = `<p class="text-center col-span-full text-gray-400 py-10">No mentors available yet. Click "Register as Mentor" to add one!</p>`;
+            return;
+        }
+
+        grid.innerHTML = mentors.map((m) => `
+            <div class="p-6 rounded-2xl border border-gray-800 bg-slate-900/50 flex flex-col justify-between hover:border-orange-500/50 transition-all">
+                <div class="flex flex-col items-center text-center">
+                    <img src="${escapeHtml(safeImg(m.image))}" alt="${escapeHtml(m.name)}" class="w-24 h-24 rounded-full mb-4 border-2 border-orange-500 object-cover">
+                    <h3 class="text-xl font-bold text-white">${escapeHtml(m.name)}</h3>
+                    <p class="text-orange-500 text-sm font-semibold mb-1">${escapeHtml(m.role || 'Mentor')}</p>
+                    <p class="text-gray-400 text-xs mb-3">${escapeHtml(m.company || 'Village Career Compass')}</p>
+                    <p class="text-gray-300 text-sm mb-4 line-clamp-3">${escapeHtml(m.bio || 'Experienced professional guiding students.')}</p>
+                    <span class="bg-orange-500/10 text-orange-400 border border-orange-500/20 text-xs px-3 py-1 rounded-full mb-6">${escapeHtml(m.expertise || 'General Advice')}</span>
+                </div>
+
+                <button class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 rounded-xl w-full flex items-center justify-center gap-2 transition-all cursor-pointer"
+                        onclick="handleChatClick(${Number(m.id)})">
+                    <i data-feather="bot" class="w-4 h-4"></i>
+                    Chat with AI ${escapeHtml((m.name || 'Mentor').split(' ')[0])}
+                </button>
+            </div>
+        `).join('');
+
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    }
+
+    // Safe Click Handler for AI Chat Trigger
+    let currentUser = null;
+    const goLogin = () => { location.href = 'login.html?next=mentors.html'; };
+
+    function handleChatClick(id) {
+        if (!currentUser) return goLogin();
+        const mentor = (mentorsList || []).find(m => Number(m.id) === id);
+        if (mentor) openAIChat(mentor);
+    }
+
+    // Search Bar Filter Logic
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = mentorsList.filter(m => 
+                (m.name && m.name.toLowerCase().includes(query)) ||
+                (m.role && m.role.toLowerCase().includes(query)) ||
+                (m.expertise && m.expertise.toLowerCase().includes(query)) ||
+                (m.company && m.company.toLowerCase().includes(query))
+            );
+            renderMentors(filtered);
+        });
+    }
+
+    // Register Mentor Prompt Handler
+    async function registerMentorInDB() {
+        if (!currentUser) return goLogin();
+        const name = prompt("Enter Mentor Full Name:");
+        if (!name) return;
+        const role = prompt("Enter Role (e.g. Software Engineer):");
+        const company = prompt("Enter Company:");
+        const expertise = prompt("Enter Primary Expertise:");
+        const email = prompt("Enter your Email (optional, for a welcome email):");
+        const bio = prompt("Short Bio:");
+
+        const newMentorObj = {
+            name,
+            role: role || "Mentor",
+            company: company || "Independent",
+            expertise: expertise || "General Guidance",
+            email: (email || "").trim(),
+            bio: bio || "Guiding rural youth in career goals.",
+            image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"
+        };
+
+        try {
+            const response = await fetch('/api/mentors', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newMentorObj)
+            });
+            
+            const resData = await response.json();
+            
+            if (resData.success) {
+                alert("Mentor added successfully!");
+                loadData();
+            } else {
+                alert(resData.message || "Could not add mentor.");
+            }
+        } catch (err) {
+            console.error("Save error:", err);
+            alert("Could not reach the server. Please try again.");
+        }
+    }
+
+    // Run on Page Load
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        fetch('/api/auth/me').then(r => r.json()).then(d => {
+            currentUser = d && d.user;
+            if (!currentUser) document.getElementById('mentor-login-hint').classList.remove('hidden');
+        }).catch(() => {});
+    });
+    </script>
+</body>
+</html>

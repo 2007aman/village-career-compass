@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Assessment Quiz - Village Career Compass</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-slate-950 text-gray-100">
+    <script src="navbar.js"></script>
+    <custom-navbar></custom-navbar>
+
+    <!-- Quiz Hero Section -->
+    <section class="py-20 px-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10">
+        <div class="container mx-auto text-center">
+            <h1 class="text-5xl font-bold gradient-text mb-6">Career Assessment Quiz</h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+                Discover your strengths and interests through our comprehensive assessment designed for rural students
+            </p>
+        </div>
+    </section>
+
+    <!-- Quiz Progress -->
+    <section class="py-8 px-6">
+        <div class="container mx-auto max-w-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-sm text-gray-400">Progress</span>
+                <span id="question-counter" class="text-sm text-gray-400">1 / 5</span>
+            </div>
+            <div class="w-full bg-gray-800 rounded-full h-2">
+                <div id="progress-bar" class="quiz-progress w-0"></div>
+            </div>
+        </div>
+    </section>
+    <!-- Quiz Container -->
+    <section class="py-12 px-6">
+        <div class="container mx-auto max-w-2xl">
+            <!-- Step Indicators -->
+            <div class="flex justify-center mb-8">
+                <div class="flex items-center space-x-2">
+                    <div class="step-indicator active" data-step="1">1</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="2">2</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="3">3</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="4">4</div>
+                    <div class="step-line"></div>
+                    <div class="step-indicator" data-step="5">5</div>
+                </div>
+            </div>
+            
+            <div id="quiz-container" class="glass-card p-8 rounded-2xl">
+                <!-- Quiz content will be dynamically loaded here -->
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center mt-8">
+                <button id="prev-btn" class="border-2 border-orange-500 px-6 py-3 rounded-lg font-semibold hover:bg-orange-500 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i data-feather="arrow-left" class="w-5 h-5 inline mr-2"></i>
+                    Previous
+                </button>
+                <button id="next-btn" class="gradient-btn px-6 py-3 rounded-lg font-semibold transition-all duration-300">
+                    Next
+                    <i data-feather="arrow-right" class="w-5 h-5 inline ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+<!-- Help Section -->
+    <section class="py-12 px-6 bg-gradient-to-b from-transparent to-gray-900">
+        <div class="container mx-auto max-w-2xl text-center">
+            <h3 class="text-2xl font-bold mb-4">Need Help?</h3>
+            <p class="text-gray-400 mb-6">
+                If you're unsure about any question, take your time and choose what feels most natural to you. There are no wrong answers!
+            </p>
+            <a href="mentors.html" class="gradient-btn px-6 py-3 rounded-lg font-semibold inline-flex items-center gap-2">
+                <i data-feather="help-circle"></i>
+                Talk to a Mentor
+            </a>
+        </div>
+    </section>
+
+    <script src="footer.js"></script>
+    <custom-footer></custom-footer>
+    
+    <script src="script.js"></script>
+    <script>feather.replace();</script>
+</body>
+</html>

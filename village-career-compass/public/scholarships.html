@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarships & Training Centers - Village Career Compass</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-slate-950 text-gray-100 min-h-screen flex flex-col">
+    <script src="navbar.js"></script>
+    <custom-navbar></custom-navbar>
+
+    <!-- Scholarships Hero Section -->
+    <section class="py-20 px-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10">
+        <div class="container mx-auto text-center">
+            <h1 class="text-5xl font-bold gradient-text mb-6">Scholarships & Training Centers</h1>
+            <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+                Find financial aid and skill development opportunities near you
+            </p>
+            
+            <!-- Search Bar -->
+            <div class="max-w-md mx-auto relative">
+                <input type="text" id="search-input" aria-label="Search opportunities" class="search-input w-full px-4 py-3 pl-12 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500" placeholder="Search opportunities...">
+                <i data-feather="search" class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs Section -->
+    <section class="py-8 px-6">
+        <div class="container mx-auto">
+            <div class="flex justify-center gap-4 mb-8">
+                <button id="scholarships-tab" class="tab-btn active gradient-btn px-6 py-3 rounded-lg font-semibold">
+                    <i data-feather="award" class="w-5 h-5 inline mr-2"></i>
+                    Scholarships
+                </button>
+                <button id="training-tab" class="tab-btn border-2 border-orange-500 px-6 py-3 rounded-lg font-semibold hover:bg-orange-500 transition-all">
+                    <i data-feather="tool" class="w-5 h-5 inline mr-2"></i>
+                    Training Centers
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scholarships Content -->
+    <section id="scholarships-content" class="py-12 px-6 flex-grow">
+        <div class="container mx-auto">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 rounded-2xl searchable">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-xl font-bold">MHRD Rural Scholarship</h3>
+                        <span class="scholarship-badge">Government</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Full scholarship for rural students pursuing engineering, medical, or agricultural studies.</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Eligibility: 12th pass with 75%+
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Amount: Up to ₹1,00,000/year
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Deadline: Announced yearly - check official portal
+                        </div>
+                    </div>
+                    <a href="apply.html?program=mhrd" class="gradient-btn px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2">
+    Apply Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+</a>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl searchable">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-xl font-bold">Tata Trusts Scholarship</h3>
+                        <span class="scholarship-badge">Private</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">For students from economically weaker sections in rural areas.</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Eligibility: Family income below ₹3 LPA
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Amount: ₹30,000-50,000/year
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Deadline: Announced yearly - check official portal
+                        </div>
+                    </div>
+                    <a href="apply.html?program=tata" class="gradient-btn px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2">
+    Apply Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+</a>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl searchable">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-xl font-bold">State Rural Development Scholarship</h3>
+                        <span class="scholarship-badge">State</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">For students from rural areas pursuing vocational training or diploma courses.</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Eligibility: Rural resident, 10th pass
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Amount: ₹15,000-25,000/year
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Deadline: Announced yearly - check official portal
+                        </div>
+                    </div>
+                    <a href="apply.html?program=state" class="gradient-btn px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2">
+    Apply Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+</a>
+                </div>
+
+                <div class="glass-card p-6 rounded-2xl searchable">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-xl font-bold">Skills India Scholarship</h3>
+                        <span class="scholarship-badge">Central</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">For skill development courses in IT, healthcare, and manufacturing.</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Eligibility: 15-25 years age
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Amount: 100% fee waiver
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Deadline: Open year-round
+                        </div>
+                    </div>
+                    <a href="apply.html?program=skills" class="gradient-btn px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2">
+    Apply Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training Centers Content -->
+    <section id="training-content" class="py-12 px-6 flex-grow hidden">
+        <div class="container mx-auto">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-card p-6 rounded-2xl searchable">
+                    <div class="flex items-start justify-between mb-4 gap-3">
+                        <h3 class="text-xl font-bold">Rural IT Training Center</h3>
+                        <span class="scholarship-badge">Digital</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Basic computer skills, office applications and internet use for village youth.</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Courses: Computer basics, MS Office, Web basics
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Duration: 3-6 months
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Fees: Free or subsidised for eligible students
+                        </div>
+                    </div>
+                    <a href="apply.html?program=it-hub" class="gradient-btn px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2">
+                        Apply Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+                <div class="glass-card p-6 rounded-2xl searchable">
+                    <div class="flex items-start justify-between mb-4 gap-3">
+                        <h3 class="text-xl font-bold">Skill Development Hub</h3>
+                        <span class="scholarship-badge">Vocational</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Hands-on trade training in electrical, solar, mobile repair and more.</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Courses: Electrician, Solar, Mobile repair
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Duration: 3-12 months
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Fees: Government-supported seats available
+                        </div>
+                    </div>
+                    <a href="apply.html?program=vocational" class="gradient-btn px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2">
+                        Apply Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+                <div class="glass-card p-6 rounded-2xl searchable">
+                    <div class="flex items-start justify-between mb-4 gap-3">
+                        <h3 class="text-xl font-bold">Agricultural Training Institute</h3>
+                        <span class="scholarship-badge">Agriculture</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">Modern farming, drone spraying and agri-business practical training.</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Courses: Modern farming, Agri-drone, Agri-business
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Duration: 1-6 months
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-300">
+                            <i data-feather="check-circle" class="w-4 h-4 text-green-500"></i>
+                            Fees: Low cost, scholarships available
+                        </div>
+                    </div>
+                    <a href="apply.html?program=agri" class="gradient-btn px-4 py-2 rounded-lg text-sm font-semibold inline-flex items-center gap-2">
+                        Apply Now <i data-feather="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <p id="no-results" class="hidden text-center text-gray-400 py-8">No opportunities match your search.</p>
+
+    <script src="footer.js"></script>
+    <custom-footer></custom-footer>
+
+    <script>
+        const schTab = document.getElementById('scholarships-tab');
+        const trTab = document.getElementById('training-tab');
+        const schSection = document.getElementById('scholarships-content');
+        const trSection = document.getElementById('training-content');
+        const searchBox = document.getElementById('search-input');
+        const noResults = document.getElementById('no-results');
+        const ACTIVE = ['gradient-btn'];
+        const INACTIVE = ['border-2', 'border-orange-500', 'hover:bg-orange-500'];
+
+        function setTab(which) {
+            const showSch = which === 'scholarships';
+            schSection.classList.toggle('hidden', !showSch);
+            trSection.classList.toggle('hidden', showSch);
+            [[schTab, showSch], [trTab, !showSch]].forEach(([btn, on]) => {
+                btn.classList.toggle('active', on);
+                ACTIVE.forEach(c => btn.classList.toggle(c, on));
+                INACTIVE.forEach(c => btn.classList.toggle(c, !on));
+            });
+            applySearch();
+        }
+
+        function applySearch() {
+            const q = searchBox.value.trim().toLowerCase();
+            const visibleSection = schSection.classList.contains('hidden') ? trSection : schSection;
+            let shown = 0;
+            visibleSection.querySelectorAll('.searchable').forEach(card => {
+                const match = !q || card.innerText.toLowerCase().includes(q);
+                card.classList.toggle('hidden', !match);
+                if (match) shown++;
+            });
+            noResults.classList.toggle('hidden', shown > 0);
+        }
+
+        schTab.addEventListener('click', () => setTab('scholarships'));
+        trTab.addEventListener('click', () => setTab('training'));
+        searchBox.addEventListener('input', applySearch);
+
+        feather.replace();
+    </script>
+</body>
+</html>

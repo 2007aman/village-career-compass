@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Applications - Village Career Compass</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body class="bg-slate-950 text-gray-100">
+
+    <section class="py-12 px-6 bg-gradient-to-br from-orange-500/10 to-yellow-500/10">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold gradient-text mb-4">Applications Dashboard</h1>
+            <p class="text-lg text-gray-300">All applications received from students</p>
+        </div>
+    </section>
+
+    <section class="py-10 px-6">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <p id="countLabel" class="text-gray-400 text-sm"></p>
+                <div class="flex gap-3">
+                    <button id="refreshBtn" class="border-2 border-orange-500 px-5 py-2 rounded-lg font-semibold hover:bg-orange-500 transition-all text-sm">Refresh</button>
+                    <button id="logoutBtn" class="border-2 border-gray-600 px-5 py-2 rounded-lg font-semibold hover:bg-gray-800 transition-all text-sm text-gray-300">Logout</button>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b border-gray-700 text-orange-400 text-sm">
+                            <th class="p-4">Name</th>
+                            <th class="p-4">Phone</th>
+                            <th class="p-4">Program</th>
+                            <th class="p-4">Location</th>
+                            <th class="p-4">Date</th>
+                            <th class="p-4"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="applicationsTableBody">
+                        <tr><td colspan="6" class="p-4 text-center text-gray-400">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    const KEY_STORE = 'vcc_admin_key';
+    let applications = [];
+
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    const body = document.getElementById('applicationsTableBody');
+
+    function showMessage(text, isError) {
+        body.innerHTML = `<tr><td colspan="6" class="p-4 text-center ${isError ? 'text-red-400' : 'text-gray-400'}">${esc(text)}</td></tr>`;
+        document.getElementById('countLabel').textContent = '';
+    }
+
+    function getKey() {
+        let key = sessionStorage.getItem(KEY_STORE);
+        if (!key) {
+            key = prompt('Enter admin key:');
+            if (key) sessionStorage.setItem(KEY_STORE, key.trim());
+        }
+        return key ? key.trim() : null;
+    }
+
+    async function loadApplications() {
+        const key = getKey();
+        if (!key) return showMessage('Admin key required. Click Refresh to try again.', true);
+        showMessage('Loading...');
+
+        try {
+            const response = await fetch('/api/admin/applications?limit=500', { headers: { 'x-admin-key': key } });
+
+            if (response.status === 401) {
+                sessionStorage.removeItem(KEY_STORE);
+                return showMessage('Wrong admin key. Click Refresh to try again.', true);
+            }
+            const result = await response.json();
+            if (!result.success) return showMessage(result.message || 'Could not load applications.', true);
+
+            applications = result.data;
+            if (applications.length === 0) return showMessage('No applications received yet.');
+
+            document.getElementById('countLabel').textContent = `${applications.length} application(s)`;
+            body.innerHTML = applications.map((app, i) => `
+              <tr class="border-b border-gray-800 hover:bg-slate-900/50">
+                <td class="p-4 font-semibold">${esc(app.fullName)}</td>
+                <td class="p-4">${esc(app.phone)}</td>
+                <td class="p-4">${esc(app.program)}</td>
+                <td class="p-4">${esc(app.village)}, ${esc(app.district)}</td>
+                <td class="p-4 text-xs">${new Date(app.createdAt).toLocaleDateString()}</td>
+                <td class="p-4"><button onclick="toggleDetails(${i})" class="text-orange-400 text-sm hover:underline">Details</button></td>
+              </tr>
+              <tr id="details-${i}" class="hidden border-b border-gray-800 bg-slate-900/40">
+                <td colspan="6" class="p-4 text-sm text-gray-300 space-y-3">
+                  <p><span class="text-gray-500">Email:</span> ${esc(app.email) || '-'} &nbsp;|&nbsp; <span class="text-gray-500">Education:</span> ${esc(app.education) || '-'}</p>
+                  <p><span class="text-orange-400">Why applying:</span><br>${esc(app.essay1)}</p>
+                  <p><span class="text-orange-400">Career goals:</span><br>${esc(app.essay2)}</p>
+                  <p><span class="text-orange-400">Challenge overcome:</span><br>${esc(app.essay3)}</p>
+                </td>
+              </tr>
+            `).join('');
+        } catch (err) {
+            console.error('Error fetching data:', err);
+            showMessage('Could not reach the server.', true);
+        }
+    }
+
+    function toggleDetails(i) {
+        document.getElementById('details-' + i)?.classList.toggle('hidden');
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', loadApplications);
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        sessionStorage.removeItem(KEY_STORE);
+        showMessage('Logged out. Click Refresh to sign in again.');
+    });
+
+    loadApplications();
+    </script>
+</body>
+</html>

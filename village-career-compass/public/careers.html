@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Careers - Village Career Compass</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%AD%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /* Modern Glassmorphism & Custom Glow Effects */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(249, 115, 22, 0.4);
+            box-shadow: 0 20px 30px -10px rgba(249, 115, 22, 0.15), 0 0 15px rgba(234, 88, 12, 0.1);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #f97316 0%, #fbbf24 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-btn {
+            background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(234, 88, 12, 0.3);
+        }
+
+        .gradient-btn:hover {
+            box-shadow: 0 6px 20px rgba(234, 88, 12, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .scholarship-badge {
+            background: rgba(249, 115, 22, 0.12);
+            border: 1px solid rgba(249, 115, 22, 0.25);
+            color: #fb923c;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.65rem;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(135deg, #ea580c 0%, #d97706 100%);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .modal-backdrop {
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        .career-img-wrap { background: linear-gradient(135deg, rgba(234,88,12,0.35), rgba(30,41,59,0.9)); }
+        .career-img-wrap .fallback-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.55); }
+    </style>
+</head>
+<body class="bg-slate-950 text-gray-100 min-h-screen flex flex-col selection:bg-orange-500 selection:text-white">
+
+    <script src="navbar.js"></script>
+    <custom-navbar></custom-navbar>
+
+    <!-- Careers Hero Section -->
+    <section class="relative py-20 px-6 overflow-hidden">
+        <div class="absolute -top-24 -left-24 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none animate-float"></div>
+        <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none animate-float" style="animation-delay: 2s;"></div>
+
+        <div class="container mx-auto text-center relative z-10">
+            <span class="inline-block px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-semibold mb-4">
+                🚀 Shape Your Future
+            </span>
+            <h1 class="text-4xl md:text-6xl font-extrabold gradient-text mb-6 tracking-tight">Explore Career Paths</h1>
+            <p class="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Browse 26 career paths with photos, salary ranges, step-by-step roadmaps and free YouTube learning channels - tailored for rural students.
+            </p>
+            
+            <!-- Search Bar -->
+            <div class="max-w-xl mx-auto relative group">
+                <input type="text" id="career-search" onkeyup="filterCareers()" class="w-full px-5 py-4 pl-12 bg-slate-900/90 border border-slate-700/80 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all shadow-xl" placeholder="Search by career, skill, or domain..." autocomplete="off">
+                <i data-feather="search" class="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-orange-400 transition-colors"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="py-4 px-6 sticky top-20 z-30 bg-slate-950/80 backdrop-blur-md border-y border-slate-800/60">
+        <div class="container mx-auto overflow-x-auto py-2 scrollbar-none">
+            <div class="flex flex-nowrap md:flex-wrap justify-start md:justify-center gap-3" id="filter-container">
+                <button class="filter-btn active" onclick="setFilter('all', this)">All Careers</button>
+                <button class="filter-btn" onclick="setFilter('technical', this)">Technical</button>
+                <button class="filter-btn" onclick="setFilter('creative', this)">Creative</button>
+                <button class="filter-btn" onclick="setFilter('business', this)">Business</button>
+                <button class="filter-btn" onclick="setFilter('education', this)">Education</button>
+                <button class="filter-btn" onclick="setFilter('healthcare', this)">Healthcare</button>
+                <button class="filter-btn" onclick="setFilter('agriculture', this)">Agriculture</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Career Cards Grid -->
+    <section class="py-12 px-6 flex-grow">
+        <div class="container mx-auto">
+            <p id="result-count" class="text-sm text-gray-400 mb-6"></p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="careers-grid"></div>
+            <p id="no-careers" class="hidden text-center text-gray-400 py-16">No careers match your search. Try a different word or choose All Careers.</p>
+        </div>
+    </section>
+
+    <!-- Comprehensive Dynamic Career Detail Modal -->
+    <div id="career-modal" class="fixed inset-0 z-50 modal-backdrop hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-700/80 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white bg-slate-800 p-2 rounded-full transition-colors">
+                <i data-feather="x" class="w-5 h-5"></i>
+            </button>
+
+            <!-- Modal Header -->
+            <div id="modal-header" class="mb-6 border-b border-slate-800 pb-4"></div>
+
+            <!-- Modal Content Sections -->
+            <div class="space-y-6">
+                <!-- Overview -->
+                <div>
+                    <h4 class="text-base font-semibold text-orange-400 flex items-center gap-2 mb-2">
+                        <i data-feather="book-open" class="w-4 h-4"></i> Career Overview & Wiki Summary
+                    </h4>
+                    <p id="modal-description" class="text-gray-300 text-sm leading-relaxed"></p>
+                </div>
+
+                <!-- Learning Roadmap -->
+                <div>
+                    <h4 class="text-base font-semibold text-orange-400 flex items-center gap-2 mb-3">
+                        <i data-feather="map-pin" class="w-4 h-4"></i> Step-by-Step Career Roadmap
+                    </h4>
+                    <div id="modal-roadmap" class="grid gap-2"></div>
+                </div>
+
+                <!-- Top Recommended YouTube Channels -->
+                <div>
+                    <h4 class="text-base font-semibold text-orange-400 flex items-center gap-2 mb-3">
+                        <i data-feather="youtube" class="w-4 h-4"></i> Best Free Learning Channels (YouTube)
+                    </h4>
+                    <div id="modal-youtube" class="grid sm:grid-cols-2 gap-3"></div>
+                </div>
+
+                <!-- External Wikipedia Link -->
+                <div class="pt-4 border-t border-slate-800 flex justify-between items-center flex-wrap gap-4">
+                    <span class="text-xs text-gray-500">Curated by Village Career Compass Team</span>
+                    <a id="modal-wiki-link" href="#" target="_blank" class="inline-flex items-center gap-2 text-sm text-amber-400 hover:underline">
+                        Read full details on Wikipedia <i data-feather="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Knowledge Base Data & Scripts -->
+    <script>
+        const flickr = (tag, n) => `https://loremflickr.com/600/400/${tag}?lock=${n}`;
+        const wikiSearch = (q) => `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(q)}`;
+
+        const CAREERS = [
+            /* ---------------- TECHNICAL ---------------- */
+            { id: 'it-support', cat: 'technical', icon: 'monitor', title: 'IT Support Specialist', label: 'Technical Domain',
+              img: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&auto=format&fit=crop&q=80',
+              desc: 'Provide technical support and maintain computer systems, networks, and hardware for local businesses & schools.',
+              badges: ['Remote / Hybrid', '6 Months Prep'], salary: '₹2.5 - 4.5 LPA',
+              overview: 'An IT Support Specialist maintains computer networks, troubleshoots hardware/software issues, sets up workstations, and manages system security for organizations.',
+              roadmap: ['Step 1: Learn Computer Basics & OS (Windows/Linux)', 'Step 2: Master Networking Fundamentals (IP Address, Routers, DNS)', 'Step 3: Gain Hardware Troubleshooting & Software Installation Skills', 'Step 4: Prepare for CompTIA A+ or Google IT Support Certification'],
+              youtube: [{ name: 'NetworkChuck', desc: 'Networking & IT fundamentals made fun' }, { name: 'Professor Messer', desc: 'Complete CompTIA A+ training courses' }, { name: 'PowerCert Animated', desc: 'Animated computer concepts for beginners' }],
+              wiki: 'https://en.wikipedia.org/wiki/Technical_support' },
+
+            { id: 'solar-tech', cat: 'technical', icon: 'sun', title: 'Solar Technician', label: 'Technical / Renewable Energy',
+              img: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?w=600&auto=format&fit=crop&q=80',
+              desc: 'Install, maintain, and repair solar energy systems for rural households, commercial shops, and agri pumps.',
+              badges: ['Green Energy', 'High Field Demand'], salary: '₹3.0 - 5.5 LPA',
+              overview: 'Solar Panel Technicians assemble, install, and maintain solar PV systems on roofs or ground mounts, ensuring optimal renewable power generation for households and agriculture.',
+              roadmap: ['Step 1: Complete ITI or Vocational Training in Electrical / Solar Trade', 'Step 2: Understand Photovoltaic (PV) Circuits & Inverter Wiring', 'Step 3: Get Hands-on Apprenticeship with Local Solar Distributors', 'Step 4: Get Govt Solar PM-KUSUM / Skill India Certification'],
+              youtube: [{ name: 'Skill Train India', desc: 'Practical vocational solar training videos' }, { name: 'Engineering Mindset', desc: 'Electrical and solar system mechanics' }],
+              wiki: 'https://en.wikipedia.org/wiki/Photovoltaics' },
+
+            { id: 'electrician', cat: 'technical', icon: 'zap', title: 'Electrician', label: 'Technical / Electrical Trade',
+              img: flickr('electrician', 11),
+              desc: 'Wire homes, shops and farms, repair motors and pumps, and keep local electrical systems safe.',
+              badges: ['ITI Trade', 'Self-Employment'], salary: '₹2.4 - 5.0 LPA',
+              overview: 'Electricians install, test and repair wiring, switchboards, motors and appliances. In villages they are always in demand for houses, irrigation pumps, shops and small factories, and many start their own service business.',
+              roadmap: ['Step 1: Complete 10th and join an ITI Electrician course (2 years)', 'Step 2: Learn house wiring, earthing, MCB/RCCB and motor winding', 'Step 3: Work as an apprentice under a licensed electrician', 'Step 4: Get the wireman licence and start your own electrical service'],
+              youtube: [{ name: 'The Engineering Mindset', desc: 'Clear explanations of electrical basics' }, { name: 'Electrician U', desc: 'Practical wiring and code tutorials' }],
+              wiki: wikiSearch('Electrician') },
+
+            { id: 'mobile-repair', cat: 'technical', icon: 'smartphone', title: 'Mobile Repair Technician', label: 'Technical / Electronics',
+              img: flickr('smartphone', 12),
+              desc: 'Repair screens, batteries and software faults on smartphones and run your own repair shop.',
+              badges: ['Low Investment', 'Own Shop'], salary: '₹1.8 - 4.5 LPA',
+              overview: 'Mobile repair technicians diagnose and fix phone hardware and software problems such as broken displays, charging faults and software crashes. A small shop with basic tools can serve a whole village and nearby areas.',
+              roadmap: ['Step 1: Learn basic electronics - components, soldering and multimeter use', 'Step 2: Practise screen, battery and charging-port replacement on old phones', 'Step 3: Learn software flashing, unlocking and data recovery', 'Step 4: Take a Skill India mobile repair course and open a shop'],
+              youtube: [{ name: 'Louis Rossmann', desc: 'Electronics repair knowledge and diagnostics' }, { name: 'Jessa Jones - iPad Rehab', desc: 'Micro-soldering and phone repair lessons' }],
+              wiki: wikiSearch('Mobile phone repair') },
+
+            { id: 'web-developer', cat: 'technical', icon: 'code', title: 'Web Developer', label: 'Technical / Software',
+              img: flickr('programmer', 13),
+              desc: 'Build websites and web apps for businesses and clients anywhere in India - even from your village.',
+              badges: ['Work From Home', 'High Growth'], salary: '₹3.0 - 10.0 LPA',
+              overview: 'Web developers design and build websites and web applications using HTML, CSS, JavaScript and server technologies. Remote work and freelancing mean you can earn well without moving to a big city.',
+              roadmap: ['Step 1: Learn HTML, CSS and JavaScript from free courses', 'Step 2: Build 5 small projects (portfolio, shop page, to-do app)', 'Step 3: Learn a framework (React) and a backend (Node.js + database)', 'Step 4: Put projects on GitHub and apply for jobs or freelance work'],
+              youtube: [{ name: 'CodeWithHarry', desc: 'Web development in Hindi for beginners' }, { name: 'Apna College', desc: 'Full web development and placement prep in Hindi' }, { name: 'freeCodeCamp.org', desc: 'Free full-length programming courses' }],
+              wiki: 'https://en.wikipedia.org/wiki/Web_developer' },
+
+            { id: 'auto-mechanic', cat: 'technical', icon: 'settings', title: 'Auto & EV Mechanic', label: 'Technical / Automobile',
+              img: flickr('mechanic', 14),
+              desc: 'Repair bikes, tractors and cars, and train for the fast-growing electric vehicle (EV) service market.',
+              badges: ['ITI / Diploma', 'EV Demand'], salary: '₹2.4 - 5.5 LPA',
+              overview: 'Automobile mechanics inspect, service and repair two-wheelers, cars and tractors. With electric vehicles spreading, technicians who understand batteries and motors will be needed even in small towns.',
+              roadmap: ['Step 1: Join an ITI Mechanic Motor Vehicle or Diploma in Automobile course', 'Step 2: Learn engine, brakes, clutch and electrical systems on real vehicles', 'Step 3: Work in a garage or authorised service centre to gain experience', 'Step 4: Add EV battery and motor training, then open your own workshop'],
+              youtube: [{ name: 'ChrisFix', desc: 'Step-by-step car repair tutorials' }, { name: 'Engineering Explained', desc: 'How engines and vehicles actually work' }],
+              wiki: wikiSearch('Automotive technician') },
+
+            { id: 'welder', cat: 'technical', icon: 'tool', title: 'Welder & Fabricator', label: 'Technical / Manufacturing',
+              img: flickr('welding', 15),
+              desc: 'Join and shape metal for gates, farm tools, structures and factory work - skilled welders earn well.',
+              badges: ['ITI Trade', 'Gulf & India Jobs'], salary: '₹2.5 - 6.0 LPA',
+              overview: 'Welders and fabricators join metal parts using arc, MIG or TIG welding and build items such as gates, tanks, farm equipment and structures. Certified welders find work in construction, manufacturing and overseas.',
+              roadmap: ['Step 1: Complete ITI Welder trade after 10th', 'Step 2: Practise arc, MIG and TIG welding with safety gear', 'Step 3: Learn blueprint reading and fabrication basics', 'Step 4: Get a welding certification and apply to industry or start a workshop'],
+              youtube: [{ name: 'Weld.com', desc: 'Welding lessons from beginner to advanced' }, { name: 'Welding Tips and Tricks', desc: 'Practical techniques for better welds' }],
+              wiki: 'https://en.wikipedia.org/wiki/Welding' },
+
+            /* ---------------- CREATIVE ---------------- */
+            { id: 'graphic-designer', cat: 'creative', icon: 'pen-tool', title: 'Graphic Designer', label: 'Creative / Digital Media',
+              img: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format&fit=crop&q=80',
+              desc: 'Design graphics, logos, posters, and digital artwork for online branding, YouTube thumbnails, and local ads.',
+              badges: ['100% Freelance', 'Work From Home'], salary: '₹2.5 - 6.0 LPA',
+              overview: 'Graphic Designers create visual concepts using software to communicate ideas that inspire, inform, and captivate consumers via logos, posters, social media, and banners.',
+              roadmap: ['Step 1: Learn Design Principles (Color Theory, Typography, Alignment)', 'Step 2: Master Tools: Canva (Beginner) -> Photoshop/Illustrator or Figma', 'Step 3: Build 5-10 Portfolio Projects for Local Businesses', 'Step 4: Create Profiles on Freelance Sites (Upwork, Fiverr)'],
+              youtube: [{ name: 'GFXMentor (Hindi)', desc: 'Best step-by-step Graphic Design tutorials in Hindi' }, { name: 'Satori Graphics', desc: 'Professional design tips & layout composition' }],
+              wiki: 'https://en.wikipedia.org/wiki/Graphic_design' },
+
+            { id: 'video-editor', cat: 'creative', icon: 'film', title: 'Video Editor', label: 'Creative / Media Production',
+              img: flickr('film', 21),
+              desc: 'Edit YouTube videos, reels, wedding films and ads for creators and businesses.',
+              badges: ['Freelance', 'Reels & YouTube'], salary: '₹2.4 - 7.0 LPA',
+              overview: 'Video editors cut, arrange and polish footage, add sound, titles and effects to produce finished videos. The creator economy and local events like weddings give steady work to editors working from home.',
+              roadmap: ['Step 1: Start with free editors (CapCut, DaVinci Resolve) on your phone or PC', 'Step 2: Learn cutting, transitions, colour correction and audio cleanup', 'Step 3: Edit sample videos for local shops, events and small YouTubers', 'Step 4: Move to Premiere Pro, build a showreel and find clients online'],
+              youtube: [{ name: 'Justin Odisho', desc: 'Video editing tutorials for beginners' }, { name: 'Peter McKinnon', desc: 'Filmmaking and editing tips' }],
+              wiki: 'https://en.wikipedia.org/wiki/Video_editing' },
+
+            { id: 'photographer', cat: 'creative', icon: 'camera', title: 'Photographer', label: 'Creative / Photography',
+              img: flickr('photographer', 22),
+              desc: 'Shoot weddings, events, products and portraits - a camera and skill can become a full business.',
+              badges: ['Event Income', 'Own Studio'], salary: '₹2.0 - 6.0 LPA',
+              overview: 'Photographers capture images for weddings, events, products, journalism and social media. Good photographers build a name locally and can also sell photos and services online.',
+              roadmap: ['Step 1: Learn camera basics - exposure, light and composition', 'Step 2: Practise daily and build a portfolio of 20 strong photos', 'Step 3: Learn editing in Lightroom or free tools like Snapseed', 'Step 4: Shoot local events, then expand to a studio or online sales'],
+              youtube: [{ name: 'Peter McKinnon', desc: 'Photography and editing masterclasses' }, { name: 'Piximperfect', desc: 'Photoshop and photo editing tutorials' }],
+              wiki: 'https://en.wikipedia.org/wiki/Photography' },
+
+            { id: 'tailor', cat: 'creative', icon: 'scissors', title: 'Tailor & Fashion Designer', label: 'Creative / Textile & Fashion',
+              img: flickr('sewing', 23),
+              desc: 'Stitch and design clothes, start a boutique, or sell made-to-order garments online.',
+              badges: ['Home Business', 'Women-Friendly'], salary: '₹1.8 - 5.0 LPA',
+              overview: 'Tailors and fashion designers cut and sew garments and create new designs. Many start from home and grow into boutiques or supply to shops and online marketplaces.',
+              roadmap: ['Step 1: Learn measuring, cutting and stitching basics', 'Step 2: Take a certified tailoring or fashion design course (PMKVY / local centres)', 'Step 3: Practise pattern making and design for blouses, suits and uniforms', 'Step 4: Start with local orders, then sell through social media and online platforms'],
+              youtube: [{ name: 'Professor Pincushion', desc: 'Sewing techniques for beginners' }, { name: 'Mimi G Style', desc: 'Pattern making and garment sewing tutorials' }],
+              wiki: wikiSearch('Tailor') },
+
+            /* ---------------- BUSINESS ---------------- */
+            { id: 'micro-finance', cat: 'business', icon: 'pie-chart', title: 'Micro-Finance Executive', label: 'Business & Finance',
+              img: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=80',
+              desc: 'Help rural entrepreneurs and Self-Help Groups (SHGs) get micro-loans, insurance, and financial guidance.',
+              badges: ['Banking & Finance', 'Field Leadership'], salary: '₹2.8 - 4.8 LPA',
+              overview: 'Micro-Finance Executives provide financial services, small loans, and savings advisory to low-income individuals or Self-Help Groups (SHGs) to boost rural entrepreneurship.',
+              roadmap: ['Step 1: Complete Graduation (B.Com, BBA, BA, or related field)', 'Step 2: Learn Basics of Banking, Micro-Credit, and Accounting', 'Step 3: Develop Strong Regional Communication & Field Assessment Skills', 'Step 4: Apply to Microfinance Institutions (MFIs) & Small Finance Banks'],
+              youtube: [{ name: 'Study IQ Education', desc: 'Banking & Indian financial ecosystem updates' }, { name: 'CA Rachana Ranade', desc: 'Financial literacy & basic banking concepts' }],
+              wiki: 'https://en.wikipedia.org/wiki/Microfinance' },
+
+            { id: 'csc-operator', cat: 'business', icon: 'briefcase', title: 'CSC / Digital Seva Operator', label: 'Business / Government Services',
+              img: flickr('computer', 31),
+              desc: 'Run a Common Service Centre offering Aadhaar, bill payment, banking and government schemes to villagers.',
+              badges: ['Own Business', 'Govt Linked'], salary: '₹1.8 - 4.5 LPA',
+              overview: 'A Common Service Centre (CSC) operator delivers digital government and private services such as Aadhaar updates, certificates, bill payments, ticket booking and banking in rural areas, earning commission on each service.',
+              roadmap: ['Step 1: Learn basic computer, internet and printing skills', 'Step 2: Register as a Village Level Entrepreneur on the official CSC portal', 'Step 3: Set up a small centre with computer, printer, scanner and internet', 'Step 4: Add services gradually - banking, insurance, scholarships and travel'],
+              youtube: [{ name: 'Digital India', desc: 'Official updates on digital services and schemes' }, { name: 'MyGov India', desc: 'Information on government programmes' }],
+              wiki: 'https://en.wikipedia.org/wiki/Common_Service_Centres' },
+
+            { id: 'ecommerce', cat: 'business', icon: 'shopping-bag', title: 'Online Seller (E-commerce)', label: 'Business / E-commerce',
+              img: flickr('package', 32),
+              desc: 'Sell local products - handicrafts, spices, clothes - on Amazon, Flipkart, Meesho and your own page.',
+              badges: ['Low Investment', 'Pan-India Market'], salary: '₹2.0 - 8.0 LPA',
+              overview: 'Online sellers list products on marketplaces and social platforms and ship them across India. Villages have unique products such as food items, crafts and textiles that can reach customers nationwide.',
+              roadmap: ['Step 1: Pick a product you can source or make locally', 'Step 2: Get GST (if required), a bank account and registration on a marketplace', 'Step 3: Learn product photography, listing and customer handling', 'Step 4: Use packaging, courier partners and ads to grow orders'],
+              youtube: [{ name: 'Ankur Warikoo', desc: 'Business and money lessons in simple language' }, { name: 'Shopify', desc: 'Starting and growing an online store' }],
+              wiki: 'https://en.wikipedia.org/wiki/E-commerce' },
+
+            { id: 'accountant', cat: 'business', icon: 'clipboard', title: 'Accountant & GST Assistant', label: 'Business / Accounting',
+              img: flickr('accounting', 33),
+              desc: 'Maintain books, file GST and income tax returns for shops, farmers and small businesses.',
+              badges: ['B.Com / Tally', 'Steady Demand'], salary: '₹2.4 - 5.5 LPA',
+              overview: 'Accountants record financial transactions, prepare statements and file GST and tax returns. Every small business needs this service, so trained people can work in firms or run their own practice.',
+              roadmap: ['Step 1: Complete 12th (Commerce) and pursue B.Com or a commerce diploma', 'Step 2: Learn Tally Prime, Excel and GST filing', 'Step 3: Intern with a CA or accounting firm for practical experience', 'Step 4: Take certifications and start taking clients or join CA-track courses'],
+              youtube: [{ name: 'CA Rachana Ranade', desc: 'Accounting and finance made easy' }, { name: 'Tally Solutions', desc: 'Official Tally Prime tutorials' }],
+              wiki: 'https://en.wikipedia.org/wiki/Accounting' },
+
+            /* ---------------- EDUCATION ---------------- */
+            { id: 'digital-trainer', cat: 'education', icon: 'laptop', title: 'Digital Literacy Trainer', label: 'Education & IT',
+              img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&auto=format&fit=crop&q=80',
+              desc: 'Teach basic computer applications, mobile banking, e-governance, and online security in village digital centers.',
+              badges: ['EdTech & Govt', 'Community Impact'], salary: '₹2.2 - 4.2 LPA',
+              overview: 'Digital Literacy Trainers educate rural communities, students, and farmers on using computers, smartphones, online payment apps (UPI), and digital government services.',
+              roadmap: ['Step 1: Master Basic Computer Operations, MS Office, and Internet Security', 'Step 2: Learn e-Governance Services (Aadhaar, DigiLocker, PM Schemes)', 'Step 3: Complete CCC (Course on Computer Concepts) Certification', 'Step 4: Join CSC (Common Service Center) or NSDL Digital Training Programs'],
+              youtube: [{ name: 'Learn More (Hindi)', desc: 'Complete MS Office & computer application guides' }, { name: 'CSC Official Channel', desc: 'Digital India schemes and CSC portal training' }],
+              wiki: 'https://en.wikipedia.org/wiki/Digital_literacy' },
+
+            { id: 'school-teacher', cat: 'education', icon: 'book-open', title: 'School Teacher', label: 'Education / Teaching',
+              img: flickr('classroom', 41),
+              desc: 'Shape young minds in government or private schools and coaching centres with a stable, respected career.',
+              badges: ['Govt Jobs', 'Job Security'], salary: '₹3.0 - 7.5 LPA',
+              overview: 'Teachers plan lessons, teach students and guide their growth. Government teacher recruitment through TET/CTET and state exams offers stable jobs, and private schools and online tutoring give more options.',
+              roadmap: ['Step 1: Complete 12th and a graduation in your chosen subject', 'Step 2: Do D.El.Ed (primary) or B.Ed (secondary)', 'Step 3: Prepare for TET / CTET and state teacher recruitment exams', 'Step 4: Apply for government posts, or start with private school or tutoring work'],
+              youtube: [{ name: 'Physics Wallah', desc: 'Free exam and subject teaching in Hindi' }, { name: 'Adda247', desc: 'Teacher exam preparation (CTET, TET)' }, { name: 'Khan Academy', desc: 'Free lessons across school subjects' }],
+              wiki: 'https://en.wikipedia.org/wiki/Teacher' },
+
+            { id: 'english-trainer', cat: 'education', icon: 'message-circle', title: 'Spoken English Trainer', label: 'Education / Language',
+              img: flickr('conversation', 42),
+              desc: 'Help students and job seekers speak confidently in English through coaching classes or online.',
+              badges: ['Own Classes', 'Online Teaching'], salary: '₹2.0 - 5.0 LPA',
+              overview: 'Spoken English trainers teach vocabulary, grammar, pronunciation and interview skills. Strong English opens doors to better jobs, and trainers can run local classes or teach online.',
+              roadmap: ['Step 1: Improve your own English by reading, listening and daily speaking', 'Step 2: Learn teaching methods and basic grammar rules', 'Step 3: Take a TEFL / spoken English trainer certificate', 'Step 4: Start batches in your area or tutor online'],
+              youtube: [{ name: 'Spoken English Guru', desc: 'Spoken English lessons in Hindi' }, { name: 'BBC Learning English', desc: 'Free English lessons from the BBC' }],
+              wiki: wikiSearch('English language teaching') },
+
+            /* ---------------- HEALTHCARE ---------------- */
+            { id: 'nurse', cat: 'healthcare', icon: 'heart', title: 'Nurse', label: 'Healthcare / Nursing',
+              img: flickr('nurse', 51),
+              desc: 'Care for patients in hospitals and clinics - nursing jobs are in demand in India and abroad.',
+              badges: ['Govt & Private Jobs', 'Abroad Options'], salary: '₹2.5 - 6.0 LPA',
+              overview: 'Nurses provide patient care, give medicines, assist doctors and support recovery. After ANM, GNM or B.Sc Nursing, they can work in government hospitals, private hospitals or go abroad.',
+              roadmap: ['Step 1: Complete 12th with Science (Biology preferred)', 'Step 2: Join ANM / GNM or B.Sc Nursing from a recognised college', 'Step 3: Register with the State Nursing Council', 'Step 4: Apply to government vacancies or private hospitals and add specialisations'],
+              youtube: [{ name: 'Simple Nursing', desc: 'Easy nursing concepts and exam help' }, { name: 'RegisteredNurseRN', desc: 'Nursing fundamentals explained clearly' }],
+              wiki: 'https://en.wikipedia.org/wiki/Nursing' },
+
+            { id: 'lab-technician', cat: 'healthcare', icon: 'activity', title: 'Medical Lab Technician', label: 'Healthcare / Diagnostics',
+              img: flickr('laboratory', 52),
+              desc: 'Run blood and urine tests that help doctors diagnose disease - open your own diagnostic lab.',
+              badges: ['DMLT / BMLT', 'Own Lab'], salary: '₹2.2 - 5.0 LPA',
+              overview: 'Medical lab technicians collect samples and perform tests that help doctors diagnose illnesses. Demand is growing as diagnostic labs open in small towns and rural areas.',
+              roadmap: ['Step 1: Complete 12th with Science (PCB)', 'Step 2: Join DMLT (diploma) or B.Sc MLT course', 'Step 3: Train in a hospital or pathology lab', 'Step 4: Get registered where needed and work in a lab or start your own collection centre'],
+              youtube: [{ name: 'Ninja Nerd', desc: 'Detailed science and medical lessons' }, { name: 'Armando Hasudungan', desc: 'Visual lessons on biology and medicine' }],
+              wiki: 'https://en.wikipedia.org/wiki/Medical_laboratory_scientist' },
+
+            { id: 'pharmacist', cat: 'healthcare', icon: 'plus-square', title: 'Pharmacist', label: 'Healthcare / Pharmacy',
+              img: flickr('pharmacy', 53),
+              desc: 'Dispense medicines safely and advise patients; open a medical store or join hospitals and companies.',
+              badges: ['D.Pharm / B.Pharm', 'Own Medical Store'], salary: '₹2.4 - 6.0 LPA',
+              overview: 'Pharmacists prepare and dispense medicines and counsel patients about safe use. With a registration they can open a pharmacy, work in hospitals, or join pharmaceutical companies.',
+              roadmap: ['Step 1: Complete 12th with Science (PCB or PCM)', 'Step 2: Join D.Pharm (2 years) or B.Pharm (4 years)', 'Step 3: Register with the State Pharmacy Council', 'Step 4: Gain experience and open a medical store or join a hospital or company'],
+              youtube: [{ name: 'Dr. Najeeb Lectures', desc: 'In-depth medical and pharmacology concepts' }, { name: 'Osmosis from Elsevier', desc: 'Clear health and medical science videos' }],
+              wiki: 'https://en.wikipedia.org/wiki/Pharmacist' },
+
+            { id: 'health-worker', cat: 'healthcare', icon: 'users', title: 'Community Health Worker', label: 'Healthcare / Public Health',
+              img: flickr('health', 54),
+              desc: 'Support village health: awareness, vaccinations, mother and child care, and first-level support.',
+              badges: ['Govt Programmes', 'Serve Your Village'], salary: '₹1.5 - 3.5 LPA',
+              overview: 'Community health workers such as ASHA and ANM workers connect villagers to health services, spread awareness on hygiene and nutrition, and support vaccination and maternal care under national health programmes.',
+              roadmap: ['Step 1: Complete 10th/12th and register with your local health centre', 'Step 2: Take the official training for ASHA / ANM roles', 'Step 3: Learn basic first aid, nutrition and maternal-child health', 'Step 4: Grow into ANM, nursing or public health roles with further study'],
+              youtube: [{ name: 'World Health Organization', desc: 'Public health education and guidance' }, { name: 'Khan Academy', desc: 'Health and medicine basics' }],
+              wiki: 'https://en.wikipedia.org/wiki/Community_health_worker' },
+
+            /* ---------------- AGRICULTURE ---------------- */
+            { id: 'agri-drone', cat: 'agriculture', icon: 'send', title: 'Agri-Drone Operator', label: 'Agriculture / Aviation Tech',
+              img: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=600&auto=format&fit=crop&q=80',
+              desc: 'Pilot specialized agricultural drones for crop health analysis, precision pesticide spraying, and land surveys.',
+              badges: ['AgriTech Tech', 'High Growth'], salary: '₹3.5 - 7.0 LPA',
+              overview: 'Agri-Drone Operators fly unmanned aerial vehicles (drones) equipped with sensors to monitor crop health, assess soil conditions, and perform targeted pesticide spraying.',
+              roadmap: ['Step 1: Complete 10+2 Education and Obtain Remote Pilot Training Certificate (RPC)', 'Step 2: Get Trained at DGCA-Approved Drone Training Schools', 'Step 3: Master Agri-Sensors, Multispectral Imaging & Drone Maintenance', 'Step 4: Partner with Local Farmers, Cooperatives, or AgriTech Startups'],
+              youtube: [{ name: 'Drone Destination', desc: 'DGCA training insights & drone piloting' }, { name: 'Krishi Jagran', desc: 'Modern AgriTech and drone usage techniques' }],
+              wiki: 'https://en.wikipedia.org/wiki/Agricultural_drone' },
+
+            { id: 'organic-farming', cat: 'agriculture', icon: 'sunrise', title: 'Organic Farming Entrepreneur', label: 'Agriculture / Organic Farming',
+              img: flickr('farm', 61),
+              desc: 'Grow chemical-free crops and sell directly to cities and online for higher prices.',
+              badges: ['Premium Prices', 'Govt Support'], salary: '₹2.5 - 8.0 LPA',
+              overview: 'Organic farmers grow crops without synthetic chemicals, using compost, natural pest control and crop rotation. Certified organic produce sells at higher prices, and schemes support training and certification.',
+              roadmap: ['Step 1: Learn organic methods - composting, bio-fertilisers and natural pest control', 'Step 2: Attend training at a Krishi Vigyan Kendra (KVK) or agricultural university', 'Step 3: Get organic certification (e.g. PGS-India) for your farm', 'Step 4: Sell directly through FPOs, farmer markets and online platforms'],
+              youtube: [{ name: 'Krishi Jagran', desc: 'Farming news, methods and success stories' }, { name: 'DD Kisan', desc: 'Government channel for farmers and farming techniques' }],
+              wiki: 'https://en.wikipedia.org/wiki/Organic_farming' },
+
+            { id: 'dairy-farming', cat: 'agriculture', icon: 'droplet', title: 'Dairy Farming Entrepreneur', label: 'Agriculture / Dairy',
+              img: flickr('cow', 62),
+              desc: 'Run a dairy unit and sell milk, curd, ghee and paneer through dairy cooperatives and local markets.',
+              badges: ['Daily Income', 'Loan Schemes'], salary: '₹2.4 - 7.0 LPA',
+              overview: 'Dairy entrepreneurs raise milch animals and sell milk and milk products. With cooperative societies, bank loans and subsidies, a small dairy can become a steady daily income source.',
+              roadmap: ['Step 1: Learn animal care, feeding, breeding and disease prevention', 'Step 2: Train at a KVK or State Dairy Development programme', 'Step 3: Start with 3-5 good-breed animals and join a milk cooperative', 'Step 4: Expand and add value - curd, ghee, paneer and direct delivery'],
+              youtube: [{ name: 'DD Kisan', desc: 'Dairy and animal husbandry guidance' }, { name: 'Krishi Jagran', desc: 'Dairy farming tips and success stories' }],
+              wiki: 'https://en.wikipedia.org/wiki/Dairy_farming' },
+
+            { id: 'food-processing', cat: 'agriculture', icon: 'package', title: 'Food Processing Unit Owner', label: 'Agriculture / Agri-Business',
+              img: flickr('food', 63),
+              desc: 'Turn local crops into pickles, flour, juices and snacks and sell under your own brand.',
+              badges: ['Value Addition', 'PMFME Scheme'], salary: '₹2.5 - 9.0 LPA',
+              overview: 'Food processing means turning raw farm produce into products such as flour, pickles, jams, snacks and packaged foods. Government schemes support micro food enterprises with training and subsidies.',
+              roadmap: ['Step 1: Pick a local crop with good supply and decide the product to make', 'Step 2: Take food processing training at a KVK or FSSAI-linked programme', 'Step 3: Get FSSAI licence, GST and packaging, and apply for PMFME subsidy', 'Step 4: Sell to local shops, online platforms and nearby towns'],
+              youtube: [{ name: 'FSSAI', desc: 'Food safety rules and licensing guidance' }, { name: 'Krishi Jagran', desc: 'Agri-business and food processing ideas' }],
+              wiki: 'https://en.wikipedia.org/wiki/Food_processing' }
+        ];
+
+        let currentCategory = 'all';
+
+        function cardHTML(c) {
+            return `
+            <div class="filter-item searchable glass-card rounded-2xl flex flex-col justify-between" data-category="${c.cat}" data-title="${c.title}">
+                <div class="career-img-wrap relative h-48 w-full overflow-hidden">
+                    <div class="fallback-icon"><i data-feather="${c.icon}" style="width:56px;height:56px"></i></div>
+                    <img src="${c.img}" alt="${c.title}" loading="lazy" referrerpolicy="no-referrer"
+                         onerror="this.style.display='none'"
+                         class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none"></div>
+                    <span class="absolute top-3 left-3 scholarship-badge capitalize bg-slate-950/70">${c.cat}</span>
+                </div>
+                <div class="p-6 flex-grow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-gradient-to-tr from-orange-500 to-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20 shrink-0">
+                                <i data-feather="${c.icon}" class="w-5 h-5 text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">${c.title}</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-5 leading-relaxed">${c.desc}</p>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            ${c.badges.map(b => `<span class="scholarship-badge">${b}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Avg Salary</div>
+                        <div class="text-base font-bold text-orange-400 mb-5">${c.salary}</div>
+                        <button onclick="openModal('${c.id}')" class="w-full gradient-btn px-4 py-2.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2">
+                            Explore Roadmap & Channels <i data-feather="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        }
+
+        function renderCareers() {
+            document.getElementById('careers-grid').innerHTML = CAREERS.map(cardHTML).join('');
+            feather.replace();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('career-search').value.trim().toLowerCase();
+            let shown = 0;
+            document.querySelectorAll('.filter-item').forEach(item => {
+                const inCategory = currentCategory === 'all' || item.dataset.category === currentCategory;
+                const inSearch = !query || item.innerText.toLowerCase().includes(query) || item.dataset.title.toLowerCase().includes(query);
+                const visible = inCategory && inSearch;
+                item.style.display = visible ? 'flex' : 'none';
+                if (visible) shown++;
+            });
+            document.getElementById('result-count').textContent = `Showing ${shown} of ${CAREERS.length} career paths`;
+            document.getElementById('no-careers').classList.toggle('hidden', shown > 0);
+        }
+
+        function setFilter(category, btn) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyFilters();
+        }
+
+        function filterCareers() { applyFilters(); }
+
+        function openModal(id) {
+            const data = CAREERS.find(c => c.id === id);
+            if (!data) return;
+
+            document.getElementById('modal-header').innerHTML = `
+                <span class="text-xs font-semibold uppercase tracking-wider text-orange-400 mb-1 block">${data.label}</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-white pr-10">${data.title}</h2>
+                <div class="text-sm text-gray-400 mt-2">Avg Salary: <span class="text-orange-400 font-semibold">${data.salary}</span></div>
+            `;
+            document.getElementById('modal-description').innerText = data.overview;
+
+            document.getElementById('modal-roadmap').innerHTML = data.roadmap.map(step => `
+                <div class="bg-slate-800/60 border border-slate-700/50 p-3 rounded-xl text-sm text-gray-200 flex items-center gap-3">
+                    <span class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></span> ${step}
+                </div>
+            `).join('');
+
+            document.getElementById('modal-youtube').innerHTML = data.youtube.map(yt => `
+                <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(yt.name)}" target="_blank" rel="noopener"
+                   class="block bg-slate-800/40 border border-slate-800 hover:border-orange-500/50 p-3 rounded-xl transition-colors">
+                    <div class="font-bold text-sm text-amber-400 flex items-center gap-2">
+                        <i data-feather="play-circle" class="w-4 h-4"></i> ${yt.name}
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">${yt.desc}</div>
+                </a>
+            `).join('');
+
+            document.getElementById('modal-wiki-link').href = data.wiki;
+            document.getElementById('modal-wiki-link').rel = 'noopener';
+            document.getElementById('career-modal').classList.remove('hidden');
+            feather.replace();
+        }
+
+        function closeModal() {
+            document.getElementById('career-modal').classList.add('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        document.getElementById('career-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'career-modal') closeModal();
+        });
+
+        renderCareers();
+
+        // Open with a category preselected, e.g. careers.html?category=technical (used by the quiz results)
+        const wanted = new URLSearchParams(location.search).get('category');
+        const wantedBtn = wanted && [...document.querySelectorAll('.filter-btn')]
+            .find(b => (b.getAttribute('onclick') || '').includes(`'${wanted}'`));
+        if (wantedBtn) { setFilter(wanted, wantedBtn); } else { applyFilters(); }
+    </script>
+</body>
+</html>
